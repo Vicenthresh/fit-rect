@@ -38,11 +38,11 @@ type Rect = {
 }
 
 function fitPanels(techo:Rect, panel:Rect):number {
-    // get number of rectangles to fit in each orientation
+    // calcular cuantos rectangulos caben en cada orientacion
     const fit_1 = Math.floor(techo.w/panel.w)  * Math.floor(techo.h/panel.h)
     const fit_2 = Math.floor(techo.w/panel.h)  * Math.floor(techo.h/panel.w)
 
-    // if none fit skip further calculations
+    // si no caben en ninguna orientacion, retorna 0
     if (fit_1 === 0 && fit_2 === 0) {
         return 0;
     }
@@ -52,23 +52,23 @@ function fitPanels(techo:Rect, panel:Rect):number {
     let remaining_techoW_2: number = 0
     let remaining_techoH_2: number = 0
     
-    // get remaining measures of orientation 1
+    // obtener la medida restante con la orientacion 1
     if(fit_1 > 0){
         remaining_techoW_1 = techo.w % panel.w == 0 ? techo.w : techo.w % panel.w
         remaining_techoH_1 = techo.h % panel.h == 0 ? techo.h : techo.h % panel.h
     }
 
-    // get remaining measures of orientation 2
+    // obtener la medida restante con la orientacion 2
     if(fit_2 > 0){
         remaining_techoW_2 = techo.w % panel.h == 0 ? techo.w : techo.w % panel.h
         remaining_techoH_2 = techo.h % panel.w == 0 ? techo.h : techo.h % panel.w
     }
 
-    // create new Rect from the remaining space
+    // crear los rectangulos nuevos con cada orientacion
     const remainingRect_1: Rect = {h: remaining_techoH_1, w: remaining_techoW_1 }
     const remainingRect_2: Rect = {h: remaining_techoH_2, w: remaining_techoW_2 }
 
-    // if remaining area is equal to techo it means, nothing remains
+    // si el area restante es igual al techo, no sobra espacio
     if(remainingRect_1.w * remainingRect_1.h == techo.w * techo.h){
         return fit_1
     }
@@ -77,20 +77,20 @@ function fitPanels(techo:Rect, panel:Rect):number {
         return fit_2
     }
 
-    // Check if there is enough remaining area to fit at least one more panel in both orientations
+    // ver si caben paneles en el area restante en ambas orientaciones
     const canFitMore_1 = remainingRect_1.w >= panel.w && remainingRect_1.h >= panel.h || remainingRect_1.w >= panel.h && remainingRect_1.h >= panel.w;
     const canFitMore_2 = remainingRect_2.w >= panel.w && remainingRect_2.h >= panel.h || remainingRect_2.w >= panel.h && remainingRect_2.h >= panel.w;
 
-    // if it can fit more, call the function again with the new rectangle
+    // si caben paneles, se vuelve a llamar la funcion con el rectangulo restante
     const totalFit_remaining_1 = canFitMore_1 ? fitPanels(remainingRect_1, panel) : 0;
     const totalFit_remaining_2 = canFitMore_2 ? fitPanels(remainingRect_2, panel) : 0;
     
-    // add the total of fits for each orientations
+    // suma el total de paneles que caben en cada orientacion
     const totalFitOrientation_1 = fit_1 + totalFit_remaining_1
     const totalFitOrientation_2 = fit_2 + totalFit_remaining_2
 
-    // return the greater number
+    // retorna el mayor total entre ambas orientaciones
     return Math.max(totalFitOrientation_1, totalFitOrientation_2);
 }
 
-// TODO show in a canvas the rectangles
+// TODO mostrar rectangulos en canvas
