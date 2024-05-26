@@ -1,16 +1,36 @@
 ---
+// Layouts
+import MainLayout from "@layouts/MainLayout.astro";
 
+// Components
+import Input from "@components/Input.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout>
+  <div class="flex flex-col xl:max-w-4xl md:max-w-2xl sm:max-w-lg max-w-md z-10 mx-6">
+    <header>
+      <h1 class="text-3xl font-bold my-8 text-center text-blue-700">Roof Panel Layout Simulator</h1>
+      <p>Este sitio simula la distribucion de paneles rectangulares en un techo retangular, para determinar la mayor cantidad de paneles que caben en el area dada.</p>
+    </header>
+    <section class="my-8 p-4 border border-gray-300 rounded-lg">
+      <h3 class="">Ingresa las medidas del techo</h3>
+      <div class="grid grid-cols-2 gap-4 my-4">
+        <Input inputType="number" inputName="techoY" labelText="Largo" value="3" />
+        <Input inputType="number" inputName="techoX" labelText="Ancho" value="5" />
+      </div>
+      <h3 class="">Ingresa las medidas del panel</h3>
+      <div class="grid grid-cols-2 gap-4 my-4">
+        <Input inputType="number" inputName="panelY" labelText="Largo" value="2" />
+        <Input inputType="number" inputName="panelX" labelText="Ancho" value="1" />
+      </div>
+      <button id="btnCalcular" class="px-4 py-2 rounded-2xl font-bold text-lg col-span-2 bg-blue-700 text-white border-2 border-blue-700 focus:outline-none"> Calcular </button>
+    </section>
+    <section id="resCard" class="bg-blue-700 text-white my-8 p-4 border border-gray-300 rounded-lg w-fit self-center">
+      <h2 class="flex items-center w-full">
+        La cantidad máxima de paneles que caben en el techo es: <span class="font-bold text-2xl px-4" id="resValue"></span>
+      </h2>
+    </section>
+  </div>
+</MainLayout>
+
+<script src="@ts/utils.ts"></script>
